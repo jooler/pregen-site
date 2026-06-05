@@ -1,0 +1,24 @@
+---
+import PageLayout from "../../layouts/PageLayout.astro";
+import ProductGrid from "../../components/products/ProductGrid.astro";
+import ScrollReveal from "../../components/common/ScrollReveal.astro";
+import { productCategories, productsPageTitle, productsPageSubtitle } from "../../data/products";
+import { localized } from "../../i18n/utils";
+import { pageSEO } from "../../data/seo";
+
+const lang = "zh";
+const seo = pageSEO.products;
+---
+
+<PageLayout
+  lang={lang}
+  title={localized(seo.title, lang)}
+  description={localized(seo.description, lang)}
+  pageTitle={localized(productsPageTitle, lang)}
+  pageSubtitle={localized(productsPageSubtitle, lang)}
+  schemaOrg={{ type: seo.schemaType, data: { name: localized(productsPageTitle, lang) } }}
+>
+  <ScrollReveal>
+    <ProductGrid categories={productCategories} lang={lang} />
+  </ScrollReveal>
+</PageLayout>

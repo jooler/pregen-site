@@ -1,0 +1,21 @@
+---
+import PageLayout from "../../../layouts/PageLayout.astro";
+import ScreeningTabs from "../../../components/services/ScreeningTabs.astro";
+import { screeningModes, crisprScreeningPage } from "../../../data/services";
+import { localized } from "../../../i18n/utils";
+import { pageSEO } from "../../../data/seo";
+
+const lang = "en";
+const seo = pageSEO["crispr-screening"];
+---
+
+<PageLayout
+  lang={lang}
+  title={localized(seo.title, lang)}
+  description={localized(seo.description, lang)}
+  pageTitle={localized(crisprScreeningPage.pageTitle, lang)}
+  pageSubtitle={localized(crisprScreeningPage.pageSubtitle, lang)}
+  schemaOrg={{ type: seo.schemaType, data: { name: localized(crisprScreeningPage.pageTitle, lang) } }}
+>
+  <ScreeningTabs modes={screeningModes} lang={lang} />
+</PageLayout>

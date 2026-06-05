@@ -1,0 +1,44 @@
+---
+import SectionHeading from "../common/SectionHeading.astro";
+import CTAButton from "../common/CTAButton.astro";
+import ScrollReveal from "../common/ScrollReveal.astro";
+import type { VisionData } from "../../data/homepage";
+import type { Locale } from "../../i18n/config";
+import { localized, localizedHref } from "../../i18n/utils";
+
+interface Props {
+  data: VisionData;
+  lang: Locale;
+}
+
+const { data, lang } = Astro.props;
+
+// Split body into paragraphs
+const paragraphs = localized(data.body, lang).split("\n\n");
+---
+
+<section class="py-section">
+  <div class="container-content">
+    <div class="max-w-3xl mx-auto">
+      <ScrollReveal>
+        <SectionHeading title={localized(data.sectionTitle, lang)} />
+      </ScrollReveal>
+
+      {paragraphs.map((p, i) => (
+        <ScrollReveal delay={i * 100}>
+          <p class="text-text-secondary text-base leading-relaxed mb-4">{p}</p>
+        </ScrollReveal>
+      ))}
+
+      <ScrollReveal delay={200}>
+        <div class="mt-8">
+          <CTAButton
+            label={localized(data.ctaLabel, lang)}
+            href={localizedHref(data.ctaHref, lang)}
+            variant="secondary"
+          />
+        </div>
+      </ScrollReveal>
+    </div>
+  </div>
+</section>

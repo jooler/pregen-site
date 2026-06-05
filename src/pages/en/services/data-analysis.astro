@@ -1,0 +1,58 @@
+---
+import PageLayout from "../../../layouts/PageLayout.astro";
+import PlaceholderImage from "../../../components/common/PlaceholderImage.astro";
+import ScrollReveal from "../../../components/common/ScrollReveal.astro";
+import { dataAnalysisPage } from "../../../data/services";
+import { localized } from "../../../i18n/utils";
+import { pageSEO } from "../../../data/seo";
+
+const lang = "en";
+const seo = pageSEO["data-analysis"];
+
+const analysisSteps = [
+  { title: "Quality Control", desc: "Cell filtering, doublet removal, and data quality assessment" },
+  { title: "Normalization & Integration", desc: "Cross-sample integration and batch effect correction" },
+  { title: "Clustering & Annotation", desc: "Cell type identification and subpopulation analysis" },
+  { title: "Differential Expression", desc: "Gene expression changes between conditions and perturbations" },
+  { title: "Perturbation Analysis", desc: "Perturb-seq specific: sgRNA assignment and perturbation effect quantification" },
+  { title: "Visualization & Reporting", desc: "Interactive plots, heatmaps, and comprehensive analysis reports" },
+];
+---
+
+<PageLayout
+  lang={lang}
+  title={localized(seo.title, lang)}
+  description={localized(seo.description, lang)}
+  pageTitle={localized(dataAnalysisPage.pageTitle, lang)}
+  pageSubtitle={localized(dataAnalysisPage.pageSubtitle, lang)}
+  schemaOrg={{ type: seo.schemaType, data: { name: localized(dataAnalysisPage.pageTitle, lang) } }}
+>
+  <div class="py-8">
+    <ScrollReveal>
+      <PlaceholderImage
+        alt="Data analysis pipeline visualization"
+        width={1200}
+        height={400}
+        aspectRatio="3/1"
+      />
+    </ScrollReveal>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+    {analysisSteps.map((step, i) => (
+      <ScrollReveal delay={i * 60}>
+        <div class="bg-bg-card border border-border rounded-lg p-6 card-lift">
+          <div class="w-8 h-8 bg-accent/10 rounded-lg flex items-center justify-center mb-3">
+            <span class="text-accent font-bold text-xs">{String(i + 1).padStart(2, "0")}</span>
+          </div>
+          <h3 class="text-base font-semibold tracking-wide mb-2">{step.title}</h3>
+          <p class="text-text-secondary text-sm leading-relaxed">{step.desc}</p>
+        </div>
+      </ScrollReveal>
+    ))}
+  </div>
+
+  <p class="mt-6 text-text-secondary/60 text-xs">
+    Specific analysis pipelines are customized based on project requirements.
+  </p>
+</PageLayout>

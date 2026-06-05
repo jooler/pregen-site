@@ -1,0 +1,47 @@
+---
+import SectionHeading from "../common/SectionHeading.astro";
+import ScrollReveal from "../common/ScrollReveal.astro";
+import type { PipelineData } from "../../data/homepage";
+import type { Locale } from "../../i18n/config";
+import { localized } from "../../i18n/utils";
+
+interface Props {
+  data: PipelineData;
+  lang: Locale;
+}
+
+const { data, lang } = Astro.props;
+---
+
+<section class="py-section">
+  <div class="container-content">
+    <ScrollReveal>
+      <SectionHeading title={localized(data.sectionTitle, lang)} />
+    </ScrollReveal>
+
+    <!-- Pipeline steps -->
+    <div class="grid grid-cols-1 md:grid-cols-5 gap-4 md:gap-2 items-start">
+      {data.steps.map((step, i) => (
+        <ScrollReveal delay={i * 100}>
+          <div class="relative flex flex-col items-center text-center">
+            {/* Step number circle */}
+            <div class="w-12 h-12 rounded-full border-2 border-accent flex items-center justify-center mb-4">
+              <span class="text-accent font-bold text-sm">{String(i + 1).padStart(2, "0")}</span>
+            </div>
+
+            {/* Connector line (desktop only, between steps) */}
+            {i < data.steps.length - 1 && (
+              <div class="hidden md:block absolute top-6 left-[calc(50%+24px)] w-[calc(100%-48px)] h-[2px] bg-accent/20 pipeline-arrow" />
+            )}
+
+            <h3 class="text-base font-semibold tracking-wide mb-2">{localized(step.title, lang)}</h3>
+            <p class="text-text-secondary text-sm leading-relaxed">{localized(step.description, lang)}</p>
+          </div>
+        </ScrollReveal>
+      ))}
+    </div>
+
+    {/* SEO keywords (visually hidden but in DOM) */}
+    <p class="sr-only">{localized(data.seoKeywords, lang)}</p>
+  </div>
+</section>

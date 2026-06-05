@@ -1,0 +1,33 @@
+---
+import type { BilingualText, BilingualHref } from "../../i18n/utils";
+import type { Locale } from "../../i18n/config";
+import { localized, localizedHref } from "../../i18n/utils";
+import type { NewsItem } from "../../data/news";
+
+interface Props {
+  item: NewsItem;
+  lang: Locale;
+}
+
+const { item, lang } = Astro.props;
+---
+
+<a
+  href={localizedHref(item.href, lang)}
+  class="block bg-bg-card border border-border rounded-lg p-6 card-lift group"
+>
+  <div class="flex items-center gap-3 mb-3">
+    <time class="text-text-secondary text-xs" datetime={item.date}>
+      {item.date}
+    </time>
+    <span class="text-xs px-2 py-0.5 bg-accent/10 text-accent rounded">
+      {localized(item.category, lang)}
+    </span>
+  </div>
+  <h3 class="text-base font-semibold tracking-wide mb-2 group-hover:text-accent transition-colors">
+    {localized(item.title, lang)}
+  </h3>
+  <p class="text-text-secondary text-sm leading-relaxed">
+    {localized(item.summary, lang)}
+  </p>
+</a>

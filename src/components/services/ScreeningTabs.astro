@@ -1,0 +1,31 @@
+---
+import TabSwitcher from "../common/TabSwitcher.astro";
+import ScreeningModeCard from "./ScreeningModeCard.astro";
+import type { ScreeningMode } from "../../data/services";
+import type { Locale } from "../../i18n/config";
+
+interface Props {
+  modes: ScreeningMode[];
+  lang: Locale;
+}
+
+const { modes, lang } = Astro.props;
+const tabs = modes.map(m => ({ key: m.key, label: localized(m.title, lang) }));
+
+// Helper to localize title
+import { localized } from "../../i18n/utils";
+---
+
+<div>
+  <TabSwitcher tabs={tabs} activeKey={modes[0].key} id="screening-modes" />
+
+  {modes.map(mode => (
+    <div
+      data-tab-content-key={mode.key}
+      data-tab-content-group="screening-modes"
+      class={mode.key === modes[0].key ? "" : "hidden"}
+    >
+      <ScreeningModeCard mode={mode} lang={lang} />
+    </div>
+  ))}
+</div>

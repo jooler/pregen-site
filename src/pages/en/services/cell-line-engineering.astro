@@ -1,0 +1,36 @@
+---
+import PageLayout from "../../../layouts/PageLayout.astro";
+import CellLineTable from "../../../components/services/CellLineTable.astro";
+import PlaceholderImage from "../../../components/common/PlaceholderImage.astro";
+import ScrollReveal from "../../../components/common/ScrollReveal.astro";
+import { cellLineTypes, cellLineEngineeringPage } from "../../../data/services";
+import { localized } from "../../../i18n/utils";
+import { pageSEO } from "../../../data/seo";
+
+const lang = "en";
+const seo = pageSEO["cell-line-engineering"];
+---
+
+<PageLayout
+  lang={lang}
+  title={localized(seo.title, lang)}
+  description={localized(seo.description, lang)}
+  pageTitle={localized(cellLineEngineeringPage.pageTitle, lang)}
+  pageSubtitle={localized(cellLineEngineeringPage.pageSubtitle, lang)}
+  schemaOrg={{ type: seo.schemaType, data: { name: localized(cellLineEngineeringPage.pageTitle, lang) } }}
+>
+  <ScrollReveal>
+    <CellLineTable types={cellLineTypes} lang={lang} />
+  </ScrollReveal>
+
+  <div class="mt-12">
+    <ScrollReveal delay={100}>
+      <PlaceholderImage
+        alt="Cell line engineering workflow"
+        width={1200}
+        height={400}
+        aspectRatio="3/1"
+      />
+    </ScrollReveal>
+  </div>
+</PageLayout>

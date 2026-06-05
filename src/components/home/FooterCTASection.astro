@@ -1,0 +1,33 @@
+---
+import CTAButton from "../common/CTAButton.astro";
+import ScrollReveal from "../common/ScrollReveal.astro";
+import type { FooterCTAData } from "../../data/homepage";
+import type { Locale } from "../../i18n/config";
+import { localized, localizedHref } from "../../i18n/utils";
+
+interface Props {
+  data: FooterCTAData;
+  lang: Locale;
+}
+
+const { data, lang } = Astro.props;
+---
+
+<section class="py-16 md:py-24 bg-bg-card border-t border-border">
+  <div class="container-content text-center">
+    <ScrollReveal>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <CTAButton
+          label={localized(data.primary.label, lang)}
+          href={localizedHref(data.primary.href, lang)}
+          variant="primary"
+        />
+        <CTAButton
+          label={localized(data.secondary.label, lang)}
+          href={localizedHref(data.secondary.href, lang)}
+          variant="secondary"
+        />
+      </div>
+    </ScrollReveal>
+  </div>
+</section>

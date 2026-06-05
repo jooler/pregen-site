@@ -1,0 +1,58 @@
+---
+import PageLayout from "../../../layouts/PageLayout.astro";
+import PlaceholderImage from "../../../components/common/PlaceholderImage.astro";
+import ScrollReveal from "../../../components/common/ScrollReveal.astro";
+import { dataAnalysisPage } from "../../../data/services";
+import { localized } from "../../../i18n/utils";
+import { pageSEO } from "../../../data/seo";
+
+const lang = "zh";
+const seo = pageSEO["data-analysis"];
+
+const analysisSteps = [
+  { title: "质控", desc: "细胞过滤、双细胞去除、数据质量评估" },
+  { title: "标准化与整合", desc: "跨样本整合与批次效应校正" },
+  { title: "聚类与注释", desc: "细胞类型鉴定与亚群分析" },
+  { title: "差异表达", desc: "条件间和扰动间的基因表达变化分析" },
+  { title: "扰动分析", desc: "Perturb-seq专有：sgRNA分配与扰动效应定量" },
+  { title: "可视化与报告", desc: "交互式图表、热图与综合分析报告" },
+];
+---
+
+<PageLayout
+  lang={lang}
+  title={localized(seo.title, lang)}
+  description={localized(seo.description, lang)}
+  pageTitle={localized(dataAnalysisPage.pageTitle, lang)}
+  pageSubtitle={localized(dataAnalysisPage.pageSubtitle, lang)}
+  schemaOrg={{ type: seo.schemaType, data: { name: localized(dataAnalysisPage.pageTitle, lang) } }}
+>
+  <div class="py-8">
+    <ScrollReveal>
+      <PlaceholderImage
+        alt="数据分析流程可视化"
+        width={1200}
+        height={400}
+        aspectRatio="3/1"
+      />
+    </ScrollReveal>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+    {analysisSteps.map((step, i) => (
+      <ScrollReveal delay={i * 60}>
+        <div class="bg-bg-card border border-border rounded-lg p-6 card-lift">
+          <div class="w-8 h-8 bg-accent/10 rounded-lg flex items-center justify-center mb-3">
+            <span class="text-accent font-bold text-xs">{String(i + 1).padStart(2, "0")}</span>
+          </div>
+          <h3 class="text-base font-semibold tracking-wide mb-2">{step.title}</h3>
+          <p class="text-text-secondary text-sm leading-relaxed">{step.desc}</p>
+        </div>
+      </ScrollReveal>
+    ))}
+  </div>
+
+  <p class="mt-6 text-text-secondary/60 text-xs">
+    具体分析流程根据项目需求定制。
+  </p>
+</PageLayout>

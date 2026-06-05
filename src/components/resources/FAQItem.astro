@@ -1,0 +1,50 @@
+---
+import type { BilingualText } from "../../i18n/utils";
+import type { Locale } from "../../i18n/config";
+import { localized } from "../../i18n/utils";
+import type { FAQItem } from "../../data/tech-resources";
+
+interface Props {
+  faq: FAQItem;
+  lang: Locale;
+  index: number;
+}
+
+const { faq, lang, index } = Astro.props;
+const faqId = `faq-${index}`;
+---
+
+<div class="border-b border-border">
+  <button
+    class="w-full flex items-center justify-between py-5 text-left group"
+    data-faq-toggle={faqId}
+  >
+    <span class="text-base font-medium pr-4 group-hover:text-accent transition-colors">
+      {localized(faq.question, lang)}
+    </span>
+    <svg
+      class="w-5 h-5 text-text-secondary flex-shrink-0 transition-transform duration-300"
+      data-faq-icon={faqId}
+      fill="none" stroke="currentColor" viewBox="0 0 24 24"
+    >
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+    </svg>
+  </button>
+  <div id={faqId} class="faq-content">
+    <p class="pb-5 text-text-secondary text-sm leading-relaxed">
+      {localized(faq.answer, lang)}
+    </p>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('[data-faq-toggle]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.getAttribute('data-faq-toggle');
+      const content = document.getElementById(id || '');
+      const icon = document.querySelector(`[data-faq-icon="${id}"]`);
+      content?.classList.toggle('open');
+      icon?.classList.toggle('rotate-180');
+    });
+  });
+</script>

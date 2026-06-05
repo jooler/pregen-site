@@ -1,0 +1,108 @@
+---
+import { mainNav } from "../../data/navigation";
+import { localized, localizedHref, t } from "../../i18n/utils";
+import LanguageSwitcher from "./LanguageSwitcher.astro";
+import ThemeToggle from "./ThemeToggle.astro";
+import type { Locale } from "../../i18n/config";
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+---
+
+<header class="fixed top-0 left-0 right-0 z-50 bg-bg-primary/95 backdrop-blur-sm border-b border-border">
+  <div class="container-content flex items-center justify-between h-16">
+    <!-- Logo -->
+    <a href={lang === "en" ? "/en/" : "/zh/"} class="flex items-center gap-2">
+      <div class="w-8 h-8 bg-accent rounded-sm flex items-center justify-center">
+        <span class="text-bg-primary font-bold text-sm">BT</span>
+      </div>
+      <span class="font-semibold tracking-wide text-lg hidden sm:inline">{lang === "en" ? "BioTech Genomics" : "伯泰基因"}</span>
+    </a>
+
+    <!-- Desktop Nav -->
+    <nav class="hidden lg:flex items-center gap-8">
+      {mainNav.map(item => (
+        item.children ? (
+          <div class="relative group">
+            <a
+              href={localizedHref(item.href, lang)}
+              class="text-text-secondary hover:text-text-primary transition-colors text-sm tracking-wide"
+            >
+              {localized(item.label, lang)}
+            </a>
+            <div class="absolute top-full left-0 pt-2 hidden group-hover:block">
+              <div class="bg-bg-card border border-border rounded-lg py-2 min-w-[200px] shadow-lg">
+                {item.children.map(child => (
+                  <a
+                    href={localizedHref(child.href, lang)}
+                    class="block px-4 py-2 text-text-secondary hover:text-accent hover:bg-bg-card-hover transition-colors text-sm"
+                  >
+                    {localized(child.label, lang)}
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+        ) : (
+          <a
+            href={localizedHref(item.href, lang)}
+            class="text-text-secondary hover:text-text-primary transition-colors text-sm tracking-wide"
+          >
+            {localized(item.label, lang)}
+          </a>
+        )
+      ))}
+    </nav>
+
+    <!-- Language Switcher + Theme Toggle + Mobile Toggle -->
+    <div class="flex items-center gap-4">
+      <ThemeToggle lang={lang} />
+      <LanguageSwitcher currentLang={lang} currentPath={Astro.url.pathname} />
+      <!-- Mobile menu button -->
+      <button
+        id="mobile-menu-btn"
+        class="lg:hidden text-text-secondary hover:text-text-primary transition-colors"
+        aria-label={t("nav.menu", lang)}
+      >
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Nav -->
+  <div id="mobile-menu" class="hidden lg:hidden bg-bg-card border-b border-border">
+    <nav class="container-content py-4 space-y-2">
+      {mainNav.map(item => (
+        item.children ? (
+          <div class="space-y-1">
+            <a href={localizedHref(item.href, lang)} class="block py-2 text-text-primary font-medium text-sm">
+              {localized(item.label, lang)}
+            </a>
+            {item.children.map(child => (
+              <a href={localizedHref(child.href, lang)} class="block py-1 pl-4 text-text-secondary text-sm">
+                {localized(child.label, lang)}
+              </a>
+            ))}
+          </div>
+        ) : (
+          <a href={localizedHref(item.href, lang)} class="block py-2 text-text-primary text-sm">
+            {localized(item.label, lang)}
+          </a>
+        )
+      ))}
+    </nav>
+  </div>
+</header>
+
+<script>
+  const btn = document.getElementById('mobile-menu-btn');
+  const menu = document.getElementById('mobile-menu');
+  btn?.addEventListener('click', () => {
+    menu?.classList.toggle('hidden');
+  });
+</script>

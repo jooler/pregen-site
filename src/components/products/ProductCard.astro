@@ -1,0 +1,22 @@
+---
+import type { BilingualText } from "../../i18n/utils";
+import type { Locale } from "../../i18n/config";
+import { localized } from "../../i18n/utils";
+import type { ProductItem } from "../../data/products";
+
+interface Props {
+  product: ProductItem;
+  lang: Locale;
+}
+
+const { product, lang } = Astro.props;
+---
+
+<div class="bg-bg-card border border-border rounded-lg p-5 card-lift">
+  <h4 class="text-base font-semibold tracking-wide mb-2 group-hover:text-accent transition-colors">
+    {localized(product.name, lang)}
+  </h4>
+  <p class="text-text-secondary text-sm leading-relaxed">
+    {localized(product.description, lang)}
+  </p>
+</div>

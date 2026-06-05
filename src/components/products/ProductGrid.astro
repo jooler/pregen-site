@@ -1,0 +1,35 @@
+---
+import ProductCard from "./ProductCard.astro";
+import type { ProductCategory } from "../../data/products";
+import type { Locale } from "../../i18n/config";
+import { localized } from "../../i18n/utils";
+
+interface Props {
+  categories: ProductCategory[];
+  lang: Locale;
+}
+
+const { categories, lang } = Astro.props;
+---
+
+<div class="space-y-12">
+  {categories.map(category => (
+    <div>
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center">
+          <div class="w-5 h-5 bg-accent/40 rounded-sm"></div>
+        </div>
+        <div>
+          <h3 class="text-xl font-semibold tracking-wide">{localized(category.title, lang)}</h3>
+          <p class="text-text-secondary text-sm mt-1">{localized(category.description, lang)}</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {category.items.map(item => (
+          <ProductCard product={item} lang={lang} />
+        ))}
+      </div>
+    </div>
+  ))}
+</div>

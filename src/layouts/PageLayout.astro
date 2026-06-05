@@ -1,0 +1,29 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import type { Locale } from "../i18n/config";
+
+interface Props {
+  lang: Locale;
+  title: string;
+  description: string;
+  pageTitle: string;
+  pageSubtitle?: string;
+  ogImage?: string;
+  canonicalUrl?: string;
+  schemaOrg?: { type: string; data: Record<string, unknown> };
+}
+
+const { lang, title, description, pageTitle, pageSubtitle, ogImage, canonicalUrl, schemaOrg } = Astro.props;
+---
+
+<BaseLayout lang={lang} title={title} description={description} ogImage={ogImage} canonicalUrl={canonicalUrl} schemaOrg={schemaOrg}>
+  <section class="py-16 md:py-24 bg-bg-card">
+    <div class="container-content">
+      <h1 class="text-3xl md:text-4xl font-semibold tracking-wide">{pageTitle}</h1>
+      {pageSubtitle && <p class="mt-4 text-text-secondary text-lg">{pageSubtitle}</p>}
+    </div>
+  </section>
+  <div class="container-content pb-24">
+    <slot />
+  </div>
+</BaseLayout>

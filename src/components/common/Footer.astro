@@ -1,0 +1,74 @@
+---
+import { footerNav } from "../../data/navigation";
+import { company } from "../../data/company";
+import { localized, localizedHref, t } from "../../i18n/utils";
+import type { Locale } from "../../i18n/config";
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+---
+
+<footer class="border-t border-border bg-bg-card">
+  <div class="container-content py-16">
+    <!-- Top section: Company info + Nav -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+      <!-- Company info -->
+      <div>
+        <div class="flex items-center gap-2 mb-4">
+          <div class="w-8 h-8 bg-accent rounded-sm flex items-center justify-center">
+            <span class="text-bg-primary font-bold text-sm">BT</span>
+          </div>
+          <span class="font-semibold tracking-wide">{localized(company.name, lang)}</span>
+        </div>
+        <p class="text-text-secondary text-sm mb-4">{localized(company.tagline, lang)}</p>
+        <div class="space-y-2 text-text-secondary text-sm">
+          <p>{t("contact.email", lang)}: {company.email}</p>
+          <p>{t("contact.phone", lang)}: {company.phone}</p>
+          <p>{t("contact.address", lang)}: {localized(company.address, lang)}</p>
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <div>
+        <h3 class="font-semibold tracking-wide mb-4">{t("nav.menu", lang)}</h3>
+        <nav class="space-y-2">
+          {footerNav.map(item => (
+            <a
+              href={localizedHref(item.href, lang)}
+              class="block text-text-secondary hover:text-accent transition-colors text-sm"
+            >
+              {localized(item.label, lang)}
+            </a>
+          ))}
+        </nav>
+      </div>
+
+      <!-- Placeholder for future content -->
+      <div>
+        <h3 class="font-semibold tracking-wide mb-4">{lang === "en" ? "Resources" : "资源"}</h3>
+        <div class="space-y-2 text-text-secondary text-sm">
+          <a href={localizedHref({ en: "/en/resources/", zh: "/zh/resources/" }, lang)} class="block hover:text-accent transition-colors">
+            {lang === "en" ? "Technical Platforms" : "技术平台"}
+          </a>
+          <a href={localizedHref({ en: "/en/resources/", zh: "/zh/resources/" }, lang)} class="block hover:text-accent transition-colors">
+            {lang === "en" ? "Protocols & White Papers" : "Protocol与白皮书"}
+          </a>
+          <a href={localizedHref({ en: "/en/resources/", zh: "/zh/resources/" }, lang)} class="block hover:text-accent transition-colors">
+            {lang === "en" ? "FAQ" : "常见问题"}
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Divider -->
+    <div class="border-t border-border pt-8">
+      <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-text-secondary text-xs">
+        <p>{company.copyright} {t("footer.rights", lang)}</p>
+        <p>{company.icp}</p>
+      </div>
+    </div>
+  </div>
+</footer>

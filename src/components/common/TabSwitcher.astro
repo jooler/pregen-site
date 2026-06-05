@@ -1,0 +1,55 @@
+---
+interface TabItem {
+  key: string;
+  label: string;
+}
+
+interface Props {
+  tabs: TabItem[];
+  activeKey: string;
+  id: string;
+}
+
+const { tabs, activeKey, id } = Astro.props;
+---
+
+<div class="flex gap-0 border-b border-border mb-8" id={`tab-bar-${id}`}>
+  {tabs.map(tab => (
+    <button
+      data-tab-key={tab.key}
+      data-tab-group={id}
+      class={`px-6 py-3 text-sm font-medium tracking-wide transition-colors border-b-2 -mb-[2px] ${
+        tab.key === activeKey
+          ? "tab-active text-accent border-accent"
+          : "text-text-secondary border-transparent hover:text-text-primary"
+      }`}
+    >
+      {tab.label}
+    </button>
+  ))}
+</div>
+
+<script>
+  document.querySelectorAll('[data-tab-key]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const key = btn.getAttribute('data-tab-key');
+      const group = btn.getAttribute('data-tab-group');
+      if (!key || !group) return;
+
+      // Update tab button styles
+      document.querySelectorAll(`[data-tab-group="${group}"]`).forEach(t => {
+        t.classList.remove('tab-active', 'text-accent', 'border-accent');
+        t.classList.add('text-text-secondary', 'border-transparent');
+      });
+      btn.classList.remove('text-text-secondary', 'border-transparent');
+      btn.classList.add('tab-active', 'text-accent', 'border-accent');
+
+      // Show/hide tab content
+      document.querySelectorAll(`[data-tab-content-group="${group}"]`).forEach(panel => {
+        panel.classList.add('hidden');
+      });
+      const target = document.querySelector(`[data-tab-content-key="${key}"][data-tab-content-group="${group}"]`);
+      target?.classList.remove('hidden');
+    });
+  });
+</script>

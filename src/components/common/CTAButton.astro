@@ -1,0 +1,23 @@
+---
+interface Props {
+  label: string;
+  href: string;
+  variant?: "primary" | "secondary" | "ghost";
+  fullWidth?: boolean;
+}
+
+const { label, href, variant = "primary", fullWidth = false } = Astro.props;
+
+const variantClasses = {
+  primary: "bg-accent text-bg-primary hover:bg-accent-hover",
+  secondary: "border border-accent text-accent hover:bg-accent/10",
+  ghost: "text-accent hover:underline underline-offset-4",
+};
+---
+
+<a
+  href={href}
+  class={`inline-flex items-center justify-center px-6 py-3 rounded text-sm font-medium tracking-wide transition-colors ${variantClasses[variant]} ${fullWidth ? "w-full" : ""}`}
+>
+  {label}
+</a>

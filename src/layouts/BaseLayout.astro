@@ -1,0 +1,69 @@
+---
+import Header from "../components/common/Header.astro";
+import Footer from "../components/common/Footer.astro";
+import SchemaOrg from "../components/seo/SchemaOrg.astro";
+import "../styles/global.css";
+import { getAlternateUrl } from "../i18n/utils";
+import type { Locale } from "../i18n/config";
+
+interface Props {
+  lang: Locale;
+  title: string;
+  description: string;
+  ogImage?: string;
+  canonicalUrl?: string;
+  schemaOrg?: { type: string; data: Record<string, unknown> };
+}
+
+const { lang, title, description, ogImage, canonicalUrl, schemaOrg } = Astro.props;
+---
+
+<html lang={lang} class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage || "/images/og-default.png"} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content={lang === "zh" ? "zh_CN" : "en_US"} />
+    <link rel="alternate" hreflang={lang === "en" ? "zh" : "en"} href={getAlternateUrl(Astro.url, lang === "en" ? "zh" : "en")} />
+    <link rel="alternate" hreflang="x-default" href={getAlternateUrl(Astro.url, "en")} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <!-- Font preconnect & load -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    {schemaOrg && <SchemaOrg type={schemaOrg.type} data={schemaOrg.data} />}
+    <!-- Theme initialization (runs before body renders to prevent flash) -->
+    <script is:inline>
+      (function() {
+        const stored = localStorage.getItem('theme');
+        const theme = stored || 'light';
+        document.documentElement.setAttribute('data-theme', theme);
+      })();
+    </script>
+  </head>
+  <body class="bg-bg-primary text-text-primary font-sans antialiased">
+    <Header lang={lang} />
+    <main>
+      <slot />
+    </main>
+    <Footer lang={lang} />
+    <!-- Scroll reveal observer -->
+    <script>
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+      document.querySelectorAll('[data-reveal]').forEach(el => observer.observe(el));
+    </script>
+  </body>
+</html>

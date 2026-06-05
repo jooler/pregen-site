@@ -1,0 +1,37 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import HeroSection from "../../components/home/HeroSection.astro";
+import PipelineSection from "../../components/home/PipelineSection.astro";
+import ServiceGridSection from "../../components/home/ServiceGridSection.astro";
+import VisionSection from "../../components/home/VisionSection.astro";
+import FooterCTASection from "../../components/home/FooterCTASection.astro";
+import { hero, pipeline, serviceGrid, vision, footerCTA } from "../../data/homepage";
+import { company } from "../../data/company";
+import { localized } from "../../i18n/utils";
+import { pageSEO } from "../../data/seo";
+
+const lang = "en";
+const seo = pageSEO.home;
+---
+
+<BaseLayout
+  lang={lang}
+  title={localized(seo.title, lang)}
+  description={localized(seo.description, lang)}
+  ogImage={seo.ogImage}
+  canonicalUrl={Astro.url.href}
+  schemaOrg={{
+    type: seo.schemaType,
+    data: {
+      name: localized(company.name, lang),
+      description: localized(company.tagline, lang),
+      url: Astro.url.origin,
+    },
+  }}
+>
+  <HeroSection data={hero} lang={lang} />
+  <PipelineSection data={pipeline} lang={lang} />
+  <ServiceGridSection data={serviceGrid} lang={lang} />
+  <VisionSection data={vision} lang={lang} />
+  <FooterCTASection data={footerCTA} lang={lang} />
+</BaseLayout>

@@ -1,0 +1,39 @@
+---
+import type { CellLineType } from "../../data/services";
+import type { Locale } from "../../i18n/config";
+import { localized } from "../../i18n/utils";
+
+interface Props {
+  types: CellLineType[];
+  lang: Locale;
+}
+
+const { types, lang } = Astro.props;
+
+const regulationHeader = lang === "en" ? "Regulation Type" : "调控类型";
+const routeHeader = lang === "en" ? "Technical Route" : "技术路线简介";
+---
+
+<div class="overflow-x-auto">
+  <table class="w-full text-sm">
+    <thead>
+      <tr class="border-b border-border">
+        <th class="py-4 px-4 text-left font-semibold tracking-wide text-text-primary">{regulationHeader}</th>
+        <th class="py-4 px-4 text-left font-semibold tracking-wide text-text-primary">{routeHeader}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {types.map(type => (
+        <tr class="border-b border-border/50 hover:bg-bg-card-hover transition-colors">
+          <td class="py-4 px-4 font-medium text-text-primary">{localized(type.regulationType, lang)}</td>
+          <td class="py-4 px-4 text-text-secondary">{localized(type.technicalRoute, lang)}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+{/* Disclaimer */}
+<p class="mt-4 text-text-secondary/60 text-xs">
+  {lang === "en" ? "Technical route feasibility depends on gene locus and cell type. Specific protocols require technical consultation to confirm." : "技术路线的可行性需结合基因位点和细胞类型确定。具体方案需技术沟通确认。"}
+</p>

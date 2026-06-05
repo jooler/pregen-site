@@ -1,0 +1,70 @@
+---
+import PlaceholderImage from "../common/PlaceholderImage.astro";
+import type { ScreeningMode } from "../../data/services";
+import type { Locale } from "../../i18n/config";
+import { localized, localizedArray } from "../../i18n/utils";
+
+interface Props {
+  mode: ScreeningMode;
+  lang: Locale;
+}
+
+const { mode, lang } = Astro.props;
+---
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+  <div>
+    {/* Use case */}
+    <div class="mb-6">
+      <h3 class="text-sm font-semibold tracking-wide text-accent mb-2">
+        {lang === "en" ? "Applications" : "适用场景"}
+      </h3>
+      <p class="text-text-secondary leading-relaxed">{localized(mode.useCase, lang)}</p>
+    </div>
+
+    {/* Workflow */}
+    <div class="mb-6">
+      <h3 class="text-sm font-semibold tracking-wide text-accent mb-2">
+        {lang === "en" ? "Workflow" : "简要流程"}
+      </h3>
+      <div class="flex flex-wrap items-center gap-2 text-sm">
+        {localized(mode.workflow, lang).split(/→|→/).map((step, i, arr) => (
+          <>
+            <span class="bg-bg-card px-3 py-1.5 rounded border border-border text-text-primary">{step.trim()}</span>
+            {i < arr.length - 1 && (
+              <span class="text-accent/50">→</span>
+            )}
+          </>
+        ))}
+      </div>
+    </div>
+
+    {/* Features */}
+    <div>
+      <h3 class="text-sm font-semibold tracking-wide text-accent mb-2">
+        {lang === "en" ? "Key Features" : "核心特征"}
+      </h3>
+      <ul class="space-y-2">
+        {localizedArray(mode.features, lang).map(feature => (
+          <li class="flex items-center gap-2 text-text-secondary text-sm">
+            <span class="w-1.5 h-1.5 bg-accent rounded-full"></span>
+            {feature}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+
+  {/* Visual placeholder */}
+  <PlaceholderImage
+    alt={`${localized(mode.title, lang)} visualization`}
+    width={600}
+    height={400}
+    aspectRatio="3/2"
+  />
+</div>
+
+{/* Disclaimer */}
+<p class="mt-6 text-text-secondary/60 text-xs">
+  {lang === "en" ? "Specific protocols require technical consultation to confirm." : "具体方案需技术沟通确认。"}
+</p>

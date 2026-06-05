@@ -1,0 +1,65 @@
+---
+import PageLayout from "../../../layouts/PageLayout.astro";
+import SectionHeading from "../../../components/common/SectionHeading.astro";
+import ScrollReveal from "../../../components/common/ScrollReveal.astro";
+import TechPlatformCard from "../../../components/resources/TechPlatformCard.astro";
+import ProtocolCard from "../../../components/resources/ProtocolCard.astro";
+import FAQItem from "../../../components/resources/FAQItem.astro";
+import { platforms, protocols, faqItems, resourcesPageTitle, resourcesPageSubtitle } from "../../../data/tech-resources";
+import { localized, t } from "../../../i18n/utils";
+import { pageSEO } from "../../../data/seo";
+
+const lang = "en";
+const seo = pageSEO.resources;
+---
+
+<PageLayout
+  lang={lang}
+  title={localized(seo.title, lang)}
+  description={localized(seo.description, lang)}
+  pageTitle={localized(resourcesPageTitle, lang)}
+  pageSubtitle={localized(resourcesPageSubtitle, lang)}
+  schemaOrg={{ type: seo.schemaType, data: { name: localized(resourcesPageTitle, lang) } }}
+>
+  {/* Tech Platforms */}
+  <section class="py-12">
+    <ScrollReveal>
+      <SectionHeading title={t("resources.platforms", lang)} />
+    </ScrollReveal>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {platforms.map((platform, i) => (
+        <ScrollReveal delay={i * 80}>
+          <TechPlatformCard platform={platform} lang={lang} />
+        </ScrollReveal>
+      ))}
+    </div>
+  </section>
+
+  {/* Protocols & White Papers */}
+  <section class="py-12">
+    <ScrollReveal>
+      <SectionHeading title={t("resources.protocols", lang)} />
+    </ScrollReveal>
+    <div class="space-y-4">
+      {protocols.map((protocol, i) => (
+        <ScrollReveal delay={i * 80}>
+          <ProtocolCard protocol={protocol} lang={lang} />
+        </ScrollReveal>
+      ))}
+    </div>
+  </section>
+
+  {/* FAQ */}
+  <section class="py-12">
+    <ScrollReveal>
+      <SectionHeading title={t("resources.faq", lang)} />
+    </ScrollReveal>
+    <div class="border-t border-border">
+      {faqItems.map((faq, i) => (
+        <ScrollReveal delay={i * 60}>
+          <FAQItem faq={faq} lang={lang} index={i} />
+        </ScrollReveal>
+      ))}
+    </div>
+  </section>
+</PageLayout>

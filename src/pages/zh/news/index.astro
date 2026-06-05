@@ -1,0 +1,28 @@
+---
+import PageLayout from "../../../layouts/PageLayout.astro";
+import NewsCard from "../../../components/news/NewsCard.astro";
+import ScrollReveal from "../../../components/common/ScrollReveal.astro";
+import { newsItems } from "../../../data/news";
+import { localized, t } from "../../../i18n/utils";
+import { pageSEO } from "../../../data/seo";
+
+const lang = "zh";
+const seo = pageSEO.news;
+---
+
+<PageLayout
+  lang={lang}
+  title={localized(seo.title, lang)}
+  description={localized(seo.description, lang)}
+  pageTitle={t("news.title", lang)}
+  pageSubtitle={t("news.subtitle", lang)}
+  schemaOrg={{ type: seo.schemaType, data: { name: t("news.title", lang) } }}
+>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {newsItems.map((item, i) => (
+      <ScrollReveal delay={i * 80}>
+        <NewsCard item={item} lang={lang} />
+      </ScrollReveal>
+    ))}
+  </div>
+</PageLayout>
